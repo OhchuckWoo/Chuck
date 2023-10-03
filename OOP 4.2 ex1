@@ -1,0 +1,25 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+	int	x[20];
+	float avg_x, stD_x;
+	avg_x = 0;
+	stD_x = 0;
+
+	for (int i = 0; i < 20; i++) {
+		x[i] = rand() % 100;
+		avg_x += x[i];
+		cout << x[i] << endl;
+	}
+	avg_x /= 20;
+
+	for (int i = 0; i < 20; i++) {
+		stD_x += (x[i] - avg_x);
+	}
+	stD_x /= 20;
+	stD_x = sqrt(stD_x);
+	cout << avg_x << endl;
+	cout << stD_x << endl;
+}

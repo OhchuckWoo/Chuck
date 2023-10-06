@@ -1,0 +1,81 @@
+#include <iostream>
+using namespace std;
+
+void GaussEli(int N, float** A, float** B) {
+	float** I = new float*[N] ;
+	for (int i = 0; i < N; i++) {
+		I[i] = new float[N];
+		for (int j = 0; j < N; j++) {
+			if (i != j) I[i][j] = 0;
+			else I[i][j] = 1;
+		}
+	}
+	for (int i = 0; i < N; i++) {
+		if (A[i][i] == 0.0) { cout << "Failed" << endl; }
+		for (int j = 0; j < N; j++) {
+			float CommonDivision = A[i][i];
+			A[i][j] /= CommonDivision;
+			I[i][j] /= CommonDivision;
+		}
+		for (int k = 0; k < N; k++) {
+			if (k != i) {
+				float CommonMultiple = A[k][i];
+				for (int j = 0; j < N; j++) {
+					A[k][j] -= CommonMultiple * A[i][j];
+					I[k][j] -= CommonMultiple * I[i][j];
+				}
+			}
+		}
+	}
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++){
+			B[i][j] = I[i][j];
+		}
+	}
+	for (int i = 0; i < N; i++) delete[] I[i];
+	delete[] I;
+}
+
+int main() {
+	int a = 2, b = 2, c = 3, d = 3, count = 0;
+	float** A_2 = new float*[a], ** A_3 = new float*[c];
+	float** B_2 = new float*[a], ** B_3 = new float*[c];
+
+	for (int i = 0; i < a; i++) {
+		A_2[i] = new float[b];
+		B_2[i] = new float[b];
+	}
+	for (int j = 0; j < c; j++) {
+		A_3[j] = new float[d];
+		B_3[j] = new float[d];
+	}
+	
+	//define matrix A_2
+	A_2[0][0] = 1; A_2[0][1] = 2; 
+	A_2[1][0] = 3; A_2[1][1] = 4;
+	//define matrix A_3
+	A_3[0][0] = 1; A_3[0][1] = -1; A_3[0][2] = -1; 
+	A_3[1][0] = -1; A_3[1][1] = 2; A_3[1][2] = 3;
+	A_3[2][0] = 1; A_3[2][1] = 1; A_3[2][2] = 4;
+
+	//2x2 matrix
+	GaussEli(2, A_2, B_2);
+	//3x3 matrix
+	GaussEli(3, A_3, B_3);
+
+	// show results
+	for (int i = 0; i < a; i++) {
+		for (int j = 0; j < b; j++) { cout << B_2[i][j] << " "; }
+		cout << endl;
+	}
+	for (int i = 0; i < c; i++) {
+		for (int j = 0; j < d; j++) { cout << B_3[i][j] << " "; }
+		cout << endl;
+	}
+	for (int i = 0; i < a; i++) { delete[] A_2[i]; delete[] B_2[i]; }
+	for (int i = 0; i < c; i++) { delete[] A_3[i]; delete[] B_3[i]; }
+	delete[] A_2; B_2;
+	delete[] A_3; B_3;
+
+	return 1;
+}	

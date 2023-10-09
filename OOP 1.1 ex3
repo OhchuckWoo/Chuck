@@ -1,0 +1,7 @@
+#include <iostream> //for cout
+using namespace std; // for the names used by C++(include, main, cout, endl...)
+void main() {
+	cout << "Oh " << "Chuck " << "Woo " <<  endl;
+	cout << "Oh\n" << "Chuck\n"<< "Woo" << endl;
+	cout << "오" << "척" << "우" << endl; // 콘솔에 한글로도 나온다!
+}

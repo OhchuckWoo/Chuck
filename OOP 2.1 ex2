@@ -1,0 +1,14 @@
+#include <iostream>      // for cout
+using namespace std;    // for the names used by C++ (include, main, cout, endl…) 
+
+void main() {
+	int a = 5, b = 6, c = 2; // 101 110 10B
+	int d = (a << 5) | (b << 2) | c;
+	cout << oct << a << " " << b << " " << c << endl;
+	cout << oct << d << endl; // 10 111 010
+	a = b = c = 0;
+	a = (d & 0340) >> 5; // 11 100 000
+	b = (d & 034) >> 2; // 11 100
+	c = (d & 03); // 11
+	cout << a << " " << b << " " << c << endl;
+}

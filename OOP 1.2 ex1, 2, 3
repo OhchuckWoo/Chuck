@@ -1,0 +1,9 @@
+#include <iostream> //for cout, cin
+using namespace std; // for the names used by C++(include, main, cout, endl...)
+void main() {
+	int ii ,jj;
+	cout << "enter an integer: " << endl;
+	cin >> ii >> jj;
+	cout << "2 * " << ii << "= " << 2 * ii << endl;
+	cout << ii << " * " << jj << "= " << ii * jj << endl;
+}

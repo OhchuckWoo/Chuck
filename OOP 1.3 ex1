@@ -1,0 +1,8 @@
+#include <iostream> //for cout, cin
+using namespace std; // for the names used by C++(include, main, cout, endl...)
+void main() {
+	float cel, faren;
+	cin >> cel;
+	faren = cel * 9.0 / 5.0 + 32;
+	cout << "faren= " << faren << endl;
+}

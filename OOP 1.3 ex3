@@ -1,0 +1,12 @@
+#include <iostream> //for cout, cin
+using namespace std; // for the names used by C++(include, main, cout, endl...)
+void main() {
+	int a, b, c, d, e, f;
+	float x, y;
+	cin >> a >> b >> c >> d >> e >> f;
+	x = (b * f - c * e) / (a * e - b * d);
+	y = (a * f - c * d) / (a * e - b * d);
+	cout << a << "x + " << b << "y = " << c << endl;
+	cout << d << "x + " << e << "y = " << f << endl;
+	cout << x << " " << y << endl;
+}

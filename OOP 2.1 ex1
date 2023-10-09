@@ -1,0 +1,14 @@
+#include <iostream>      // for cout
+using namespace std;    // for the names used by C++ (include, main, cout, endl…) 
+const int INTER = 1, SEOUL = 2, KWANG = 3;
+const int WOE = 1, CHE = 2, JUN = 3, GONG = 4, KUK = 5;
+const int SW = 1, EE = 2, CE = 3, ME = 5;
+
+void main() {
+	//국제캠퍼스 공대 기계과이면..
+	short c = 0; //0b
+	c = INTER << 6; //1000000b
+	c |= GONG << 3; //1100000b
+	c |= ME; //1100101b, 1 100 101
+	cout << oct << c << endl;
+}

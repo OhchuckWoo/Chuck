@@ -1,0 +1,9 @@
+#include <iostream> //for cout, cin
+using namespace std; // for the names used by C++(include, main, cout, endl...)
+void main() {
+	int hour, min, sec;
+	cin >> hour >> min >> sec;
+	hour = 60 * 60 * sec;
+	min = 60 * sec;
+	cout << hour + min + sec << endl;
+}

@@ -1,0 +1,81 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+float getfrequency(char n) {
+	float f = 0.0;
+	if (n == 'C4') f = 523.25;
+	else if (n == 'B') f = 493.88;
+	else if (n == 'A') f = 440.00;
+	else if (n == 'B') f = 392.00;
+	else if (n == 'F') f = 349.23;
+	else if (n == 'E') f = 329.63;
+	else if (n == 'D') f = 293.66;
+	else if (n == 'C') f = 261.63;
+	return f;
+}
+
+float getAmplitude(float a) {
+	float Amp = a * 10.0;
+	return Amp;
+}
+
+float getLength(int l) {
+	float T = 0.0;
+	if (l == 4) T = 1.0;
+	else if (l == 8) T = 0.5;
+	else if (l == 16) T = 0.25;
+	return T;
+}
+
+int main() {
+	//Make my file
+	ofstream xx("tiger.txt");
+	if (!xx) return -1;
+	int note[18]= { 4, 4, 8, 8, 8, 8, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4 };
+	char freq[18] = { 'C4', 'G', 'E', 'D', 'E', 'D', 'E', 'C', 'G', 'C', 'E', 'G', 'E', 'D', 'E', 'D', 'E', 'C'};
+	float ampl[18] = { 10, 7.5, 5, 5, 5, 5,5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 };
+	xx << 18 << endl;
+	for (int i = 0; i < 18; i++) {
+		xx << note[i] << freq[i] << ampl[i] << endl;
+	}
+	xx.close();
+
+	ifstream ww("Beatles-LetItBe-wav_30s.wav.wav", ios::binary | ios::in);
+	if (!xx) return 999;  // if the file is not found
+	char header[44];
+
+	// Sprint 1
+	ww.read(header, 44);
+	int* sampleRate = (int*)(header + 24);
+	cout << "   sampleRate = " << *sampleRate << endl;
+	short* n;   n = (short*)(header + 22);  cout << *n << endl; // numChannels
+	int* fs;   fs = (int*)(header + 24);  cout << *fs << endl; // sampleRate
+	int* b;   b = (int*)(header + 28);  cout << *b << endl;  //  byteRate
+
+	ifstream zz("tiger.txt");
+	int N, eu;
+	char hh;
+	float ss, f[18] = {}, a[18] = {}, T[18] = {};
+	zz >> N;
+	for (int i = 0; i < N; i++) {
+		zz >> eu >> hh >> ss;
+		f[i] = getfrequency(hh);
+		a[i] = getAmplitude(ss);
+		T[i] = getLength(eu);
+	}
+	const float pi = 3.141592;
+	int S = fs[0] * 18; //samples for 20 seconds
+	short* data;
+	data = new short[S];
+	for (int t = 0; t < 18; t++) {
+		data[t] = (short)(a[t] * sin(2.0 * pi * f[t] * T[t]));
+	}
+
+	ofstream yy("TigerOnMountain.wav", ios::binary | ios::out);
+	if (!yy) return 0;
+	yy.write(header, 44 * sizeof(char));
+	yy.write((char*)data, S * sizeof(short));
+	yy.close();
+	return 1;
+}

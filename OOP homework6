@@ -1,17 +1,18 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
+const float pi = 3.141592;
 
 float getfrequency(char n) {
 	float f = 0.0;
-	if (n == 'C4') f = 523.25;
+	if (n == 'C') f = 523.25;
 	else if (n == 'B') f = 493.88;
 	else if (n == 'A') f = 440.00;
-	else if (n == 'B') f = 392.00;
+	else if (n == 'G') f = 392.00;
 	else if (n == 'F') f = 349.23;
 	else if (n == 'E') f = 329.63;
 	else if (n == 'D') f = 293.66;
-	else if (n == 'C') f = 261.63;
+	else if (n == 'c') f = 261.63;
 	return f;
 }
 
@@ -33,7 +34,7 @@ int main() {
 	ofstream xx("tiger.txt");
 	if (!xx) return -1;
 	int note[18]= { 4, 4, 8, 8, 8, 8, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4 };
-	char freq[18] = { 'C4', 'G', 'E', 'D', 'E', 'D', 'E', 'C', 'G', 'C', 'E', 'G', 'E', 'D', 'E', 'D', 'E', 'C'};
+	char freq[18] = { 'C', 'G', 'E', 'D', 'E', 'D', 'E', 'c', 'G', 'c', 'E', 'G', 'E', 'D', 'E', 'D', 'E', 'c'};
 	float ampl[18] = { 10, 7.5, 5, 5, 5, 5,5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 };
 	xx << 18 << endl;
 	for (int i = 0; i < 18; i++) {
@@ -41,41 +42,50 @@ int main() {
 	}
 	xx.close();
 
-	ifstream ww("Beatles-LetItBe-wav_30s.wav.wav", ios::binary | ios::in);
-	if (!xx) return 999;  // if the file is not found
+	ifstream ww("Beatles-LetItBe-wav_30s.wav", ios::binary | ios::in);
+	if (!ww) return 999;  // if the file is not found
 	char header[44];
 
 	// Sprint 1
-	ww.read(header, 44);
+	ww.read(header, 44*sizeof(char));
 	int* sampleRate = (int*)(header + 24);
 	cout << "   sampleRate = " << *sampleRate << endl;
-	short* n;   n = (short*)(header + 22);  cout << *n << endl; // numChannels
-	int* fs;   fs = (int*)(header + 24);  cout << *fs << endl; // sampleRate
-	int* b;   b = (int*)(header + 28);  cout << *b << endl;  //  byteRate
+	short* numChannels; numChannels = (short*)(header + 22); 
+	cout << "   numChannels = " << *numChannels << endl;
+	int* byteRate; byteRate = (int*)(header + 28);
+	cout << "   byteRate = " << *byteRate << endl;
 
 	ifstream zz("tiger.txt");
+	if (!zz) return -9;
 	int N, eu;
 	char hh;
-	float ss, f[18] = {}, a[18] = {}, T[18] = {};
+	float ss, f, a, T;
 	zz >> N;
+
+	float dt = 1 / sampleRate[0];
+	short* data;
+
+	ofstream yy("tigerOnMountain.wav");
+		yy.write(header, 44 * sizeof(char));
+
 	for (int i = 0; i < N; i++) {
 		zz >> eu >> hh >> ss;
-		f[i] = getfrequency(hh);
-		a[i] = getAmplitude(ss);
-		T[i] = getLength(eu);
-	}
-	const float pi = 3.141592;
-	int S = fs[0] * 18; //samples for 20 seconds
-	short* data;
-	data = new short[S];
-	for (int t = 0; t < 18; t++) {
-		data[t] = (short)(a[t] * sin(2.0 * pi * f[t] * T[t]));
-	}
+		f = getfrequency(hh);
+		a = getAmplitude(ss);
+		T = getLength(eu);
+		data = new short(T);
+		cout << f << " " << a << " " << T << endl;
+		for (float t = 0; t < T; t+=dt){
+			data[i] = (short)(a * sin(2.0 * pi * f * t * dt));
+		}
+		*numChannels = 1;
+		*byteRate = *numChannels * (*sampleRate) * sizeof(short);
+		ww.read((char*)data, T * sizeof(short));
 
-	ofstream yy("TigerOnMountain.wav", ios::binary | ios::out);
-	if (!yy) return 0;
-	yy.write(header, 44 * sizeof(char));
-	yy.write((char*)data, S * sizeof(short));
-	yy.close();
+		yy.write((char*)data, T * sizeof(short));
+		yy.close();
+	}
+	zz.close();
+	ww.close();
 	return 1;
 }

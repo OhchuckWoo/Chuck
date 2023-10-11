@@ -1,0 +1,90 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+const float pi = 3.141592;
+
+float getfrequency(char n) {
+   float f;
+   if (n == 'C') f = 523.25;
+   else if (n == 'B') f = 493.88;
+   else if (n == 'A') f = 440.00;
+   else if (n == 'G') f = 392.00;
+   else if (n == 'F') f = 349.23;
+   else if (n == 'E') f = 329.63;
+   else if (n == 'D') f = 293.66;
+   else if (n == 'c') f = 261.63;
+   return f;
+}
+
+float getAmplitude(float a) {
+   float Amp = a * 1000.0;
+   return Amp;
+}
+
+float getLength(int i) {
+   float T;
+   if (i == 4) T = 1.0;
+   else if (i == 8) T = 0.5;
+   else if (i == 16) T = 0.25;
+   return T;
+}
+
+
+int main() {
+   ifstream original("Beatles-LetItBe-wav_30s.wav", ios::binary | ios::in);
+   if (!original) return 100;
+
+   char header[44];
+   original.read(header, 44);
+
+   short* number_of_channel; number_of_channel = (short*)(header + 22); *number_of_channel = 1;
+   int* sample_rate; sample_rate = (int*)(header + 24); *sample_rate = 8000;
+   int* byte_rate; byte_rate = (int*)(header + 28); *byte_rate = number_of_channel[0] * sample_rate[0] * sizeof(short);
+   cout << *number_of_channel << *sample_rate << *byte_rate << endl;
+   
+   
+   ifstream my_text("tiger.txt");
+   if (!my_text) return 200;
+   int length, N;
+   char word;
+   float amp, f[18], a[18], T[18], S[18];
+   my_text >> N;
+
+   for (int i = 0; i < N; i++) {
+      my_text >> length >> word >> amp;
+
+      T[i] = getLength(length);
+      f[i] = getfrequency(word);
+      a[i] = getAmplitude(amp);
+      S[i] = sample_rate[0] * T[i];
+
+      cout << f[i] << " " << a[i] << " " << T[i] << " " << S[i] << endl; 
+   }
+   
+   ofstream my_wave("tigerOnMountain1.wav", ios::binary | ios::out);
+   if (!my_wave) return 300;
+
+   my_wave.write(header, 44 * sizeof(char));
+
+   float dt = 1.0 / sample_rate[0];
+
+   for (int i = 0; i < N; i++) {
+      short* data;
+      data = new short[S[i]];
+
+      int ii = 0;
+
+      for (float t = 0.0; t < T[i]; t+=dt,ii++) {
+         data[ii] = (short)(a[i] * sin(2.0 * pi * f[i] * t)); 
+      }
+
+      my_wave.write((char*)data, S[i] * sizeof(short));
+      
+   }
+   
+   original.close();
+   my_text.close();
+   my_wave.close();
+
+   return 1;
+}

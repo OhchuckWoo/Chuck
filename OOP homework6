@@ -17,7 +17,7 @@ float getfrequency(char n) {
 }
 
 float getAmplitude(float a) {
-	float Amp = a * 10.0;
+	float Amp = a * 1000.0;
 	return Amp;
 }
 
@@ -55,11 +55,15 @@ int main() {
 	int* byteRate; byteRate = (int*)(header + 28);
 	cout << "   byteRate = " << *byteRate << endl;
 
+	*numChannels = 1;
+	*sampleRate = 8000;
+	*byteRate = numChannels[0] * (sampleRate[0]) * sizeof(short);
+
 	ifstream zz("tiger.txt");
 	if (!zz) return -9;
 	int N, eu;
 	char hh;
-	float ss, f, a, T;
+	float ss, f[18], a[18], T[18];
 	zz >> N;
 
 	float dt = 1 / sampleRate[0];
@@ -70,19 +74,23 @@ int main() {
 	if (!yy) return 0;
 	for (int i = 0; i < N; i++) {
 		zz >> eu >> hh >> ss;
-		f = getfrequency(hh);
-		a = getAmplitude(ss);
-		T = getLength(eu);
-		int S = *sampleRate * T;
-		cout << f << " " << a << " " << T << endl; //여기까지는 원활하게 코딩
-		data = new short[S];
-		for (float t = 0; t < T; t += dt) {
-			data[i] = (short)(a * sin(2.0 * pi * f * t));
+		f[i] = getfrequency(hh);
+		a[i] = getAmplitude(ss);
+		T[i] = getLength(eu);
+
+		int S[18];
+		S[i] = sampleRate[0] * T[i];
+		data = new short[S[i]];
+
+		cout << f[i] << " " << a[i] << " " << T[i] << endl; //여기까지는 원활하게 코딩
+	
+		for (int t = 0; t < S[i]; t++) {
+			data[i] = (short)(a[i] * sin(2.0 * pi * f[i] * t * dt)); //메트로놈 박자 소리만 들려요
 		}
-		yy.write((char*)data, i * sizeof(short));
+		yy.write((char*)data, S[i] * sizeof(short));
+		delete[] data;
 	}
 	yy.close();
 	zz.close();
-	ww.close();
 	return 1;
 }

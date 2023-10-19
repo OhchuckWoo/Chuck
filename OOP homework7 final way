@@ -1,0 +1,37 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+void All(int, int*, float*);
+void mult5(int*);
+void square(float*);
+
+int main() {
+	int a = 1234;
+	int b[5];
+	float c[3];
+	All(a, b, c);
+	cout << a << "\n";
+	for (int i = 0; i < 5; i++) cout << b[i] << endl;
+	for (int j = 0; j < 3; j++) cout << c[j] << endl;
+	return 1;
+}
+
+
+void All(int x, int* y, float* z) {
+	mult5(y);
+	square(z);
+
+	ofstream xxx("mybin.dat", ios::binary | ios::out);
+	xxx.write((char*)&x, sizeof(int));
+	xxx.write((char*)y, sizeof(int) * 5);
+	xxx.write((char*)z, sizeof(float) * 3);
+}
+
+void mult5(int* ii) {
+	for (int i = 0; i < 5; i++) ii[i] = 1000 * (i + 1);
+}
+
+void square(float* jj) {
+	for (int i = 0; i < 3; i++) jj[i] = pow(0.5 * (i - 1), 2);
+}

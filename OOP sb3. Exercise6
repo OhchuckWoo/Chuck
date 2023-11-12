@@ -1,28 +1,24 @@
-Life a, b, c;
+Siha[] aa;
 void setup(){
   size(1000,800);
-  a = new Life(100,100,10);
-  b = new Life(300,150,15);
-  c = new Life(500,200,8);
-  
+  aa = new Siha[3];
   for (int i=0; i<3; i++) { 
-    a.vx = 3*(i+1); a.vy = 2*(i+1);
-    b.vx = 4*(i+1); b.vy = 3*(i+1);
-    c.vx = 5*(i+1); c.vy = 5*(i+1);
+    aa[i] = new Siha(100+200*i, 100+50*i, 10+5*i);
+    aa[i].vx = 1.5*(1+i); aa[i].vy = i+1;
   }
 }
 void draw(){
-  background(230);
-  a.display(); b.display(); c.display();
-  a.move();
-  b.move();
-  c.move();
+  background(180);
+  for (int i = 0; i<3; i++){
+    aa[i].Life();
+    aa[i].act();
+  }
 }
 
-class Life{
+class Siha{
   float x, y, d, vx, vy;
   int colorOption;
-  Life(float x, float y, float d) { 
+  Siha(float x, float y, float d) { 
   this.x = x; this.y =y; this.d = d; 
   float xx = int(random(4));
   if (xx<1) colorOption = 0;
@@ -30,7 +26,7 @@ class Life{
   else if (xx<3) colorOption = 2;
   else colorOption = 3;}
   
-  void display(){
+  void Life(){
     if (colorOption == 0) fill(255);
     else if (colorOption == 1) fill(255, 0, 0);
     else if (colorOption == 2) fill(0, 255, 0);
@@ -40,7 +36,7 @@ class Life{
     arc(x+d*2,y-d*1.5,d*2,d*2,PI,2*PI);
     arc(x,y,d*6,d*2,0,PI);
   }
-  void move(){
+  void act(){
     x += vx;
     y += vy;
     if (x > width || x < 0) vx = -vx;

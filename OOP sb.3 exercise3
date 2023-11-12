@@ -1,0 +1,23 @@
+void setup(){
+  size(1000, 800);
+  background(255);
+  Ball4 a, b, c;
+  a = new Ball4(400, 400, 50);
+  b = new Ball4(700, 200, 75);
+  c = new Ball4(100, 600, 100);
+  a.r = 255; a.g = 0; a.b = 0;
+  b.r = 0; b.g = 255; b.b = 0;
+  c.r = 0; c.g = 0; c.b = 255;
+  a.display(); b.display(); c.display();
+}
+class Ball4{
+  Ball4(float x, float y, float D) { this.x = x; this.y = y; this.D = D; }
+  float x, y, D, r, g, b;
+  void display(){
+    fill(r, g, b);
+    circle(x, y, D);
+    circle(x+D, y, D);
+    circle(x+D, y+D, D);
+    circle(x, y+D, D);
+  }
+}

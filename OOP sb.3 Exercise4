@@ -1,0 +1,18 @@
+void setup(){
+  size(1000, 800);
+  miso a;
+  a = new miso(500, 400, 100);
+  a.display();
+}
+class miso{
+  miso(float x, float y, float D) { this.x = x; this.y = y; this.D = D; }
+  float x, y, D, r, g, b;
+  void display(){
+    fill(255);
+    circle(x, y, D);
+    circle(x-D/5, y-D/6, D/5);
+    arc(x+D/5, y-D/6, D/5, D/5, PI, 2*PI);
+    fill(255, 0,0);
+    arc(x, y, D*5/6, D*4/5, 0, PI);
+  }
+}

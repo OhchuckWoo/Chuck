@@ -1,0 +1,22 @@
+void setup(){
+  weight a, b, c;
+  a  = new weight(50000);
+  b  = new weight(60000);
+  c  = new weight(70000);
+  println(" a: " + a.g + "g = " + a.g2kg() + "kg = " + a.g2ton() + "ton");
+  println(" b: " + b.g + "g = " + b.g2kg() + "kg = " + b.g2ton() + "ton");
+  println(" c: " + c.g + "g = " + c.g2kg() + "kg = " + c.g2ton() + "ton");
+}
+class weight{
+  float g, kg, ton;
+  weight(float g) {this.g = g;}
+  
+  float g2kg(){
+    kg = g/1000;
+    return kg;
+  }
+  float g2ton(){
+    ton = g/1000000;
+    return ton;
+  }
+}

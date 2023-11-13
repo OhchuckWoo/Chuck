@@ -1,0 +1,72 @@
+SihaBoy[] b;
+SihaGirl[] c;
+void setup() {
+  size(1000, 800);
+  b = new SihaBoy[3];
+  c = new SihaGirl[3];
+  for(int i = 0; i<3; i++){
+  c[i] = new SihaGirl(300, 150*(i+1), 100*(i+1));
+  b[i] = new SihaBoy(700, 150*(1+i), 100*(i+1));
+  b[i].drawNecktie();  
+  c[i].drawHair();
+  }
+}
+
+class Siha {
+  Siha() {   };
+  Siha(float p, float q, float r) {
+    x = p;      y = q;     d = r;
+  }
+  float x, y, d;
+  void drawFace() {
+    fill(255);
+    ellipse(x, y, d, d/3*2);
+    circle(x-d/5, y-d/6, d/5);
+    arc(x+d/5, y-d/6, d/5, d/5, PI, 2*PI);
+    arc(x, y, d*2/3, d/5, 0, PI);
+  }
+  void pupil() {
+    fill(0,0,122);
+    circle(x-d/5, y-d/6, d/10);
+  }
+}
+
+class SihaBoy extends Siha{
+  SihaBoy(float p, float q, float r){
+    super(p,q,r);
+  }
+  void drawNecktie(){
+    drawFace();
+    pupil();
+    mustache();
+    fill(255,0,0);
+    float yy = y+d/3;
+    float dxy = d/10;
+    triangle(x,yy,x-dxy,yy+dxy,x-dxy,yy-dxy);
+    triangle(x,yy,x+dxy,yy+dxy,x+dxy,yy-dxy);
+  }
+  void mustache() {
+    fill(0);
+    rect(x-d/5, y, d*2/5, d/20);
+  }
+}
+
+class SihaGirl extends Siha{
+  SihaGirl(float p, float q, float r){
+    super(p,q,r);
+  }
+  void drawHair(){   
+    fill(0); 
+    arc(x, y, d*6/5, d/5*4,PI,2*PI); 
+    drawFace();
+    drawlips();
+    pupil();
+  }
+  void drawlips(){
+    fill(255, 0, 0);
+    ellipse(x, y+d/10 , d/10, d/20);
+    fill(255);
+    arc(x, y, d*2/3, d/5, 0, PI);
+  }
+}
+

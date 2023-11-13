@@ -1,0 +1,73 @@
+//storeMain.cpp
+#include <iostream>
+#include "fruit.h"
+#include "store.h"
+
+using namespace std;
+
+int main() {
+	store A, B;
+	A = store(2, 3, 5, 7, 200, 500, 1000, 1500);
+	B = store(1, 8, 6, 4, 3500, 4500, 2000, 5000);
+	cout << A.total() << endl;
+	cout << B.total() << endl;
+	cout << " A peach " << A.peach.price << endl;
+	cout << " B mango's amount " << B.mango.many << endl;
+	cout << " A apples - How much are they? " << A.apple.calc() << endl;
+	B.pear.show_all();
+}
+
+//store.h
+#pragma once
+#include "fruit.h"
+class store {
+public:
+	store() {};
+	store(int a, int b, int c, int d, float e, float f, float g, float h) {
+		apple = fruit(e, a);
+		pear = fruit(f, b);
+		peach = fruit(g, c);
+		mango = fruit(h, d);
+	}
+	fruit apple, pear, peach, mango;
+	float total();
+};
+
+//fruit.h
+#include <iostream>
+#pragma once
+using namespace std;
+
+class fruit {
+public:
+	fruit() { price = 200;  many = 2; }
+	fruit(float p, int n) : price(p) { many = n; }
+	int many;
+	float price;
+	
+	float calc();
+	void show_all();
+};
+
+//store.cpp
+#include "store.h"
+
+float store::total() {
+	float x = apple.calc();
+	x += pear.calc();
+	x += peach.calc();
+	x += mango.calc();
+	return x;
+}
+
+//fruit.cpp
+#include "fruit.h"
+
+float fruit::calc() {
+	return price * many;
+}
+void fruit::show_all() {
+	cout << "price: " << price << endl;
+	cout << "many: " << many << endl;
+	cout << endl;
+}

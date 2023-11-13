@@ -1,0 +1,45 @@
+//header file "classFile.h"
+#include <iostream>
+#pragma once
+using namespace std;
+
+class fruit {
+public:
+	fruit() { price = 700; many = 8; day = 12; }
+	fruit(float p, int n, int d) { price = p; many = n; day = d; }
+	int many, day;
+	float price;
+	
+	float calc() {
+		return price * many;
+	}
+	void show_all() {
+		cout << "price: " << price << endl;
+		cout << "many: " << many << endl;
+		cout << "day: " << day << endl;
+		cout << endl;
+	}
+};
+
+
+//main file "mainFile.cpp"
+#include <iostream>
+#include "classFile.h"
+
+using namespace std;
+
+int main() {
+	fruit apple, pear, peach, mango;
+	apple = fruit(500, 5, 12);
+	pear = fruit(300, 5, 11);
+	peach = fruit(1000, 5, 13);
+	mango = fruit();
+	cout << apple.calc() << endl;
+	cout << pear.calc() << endl;
+	cout << peach.calc() << endl;
+	cout << mango.calc() << endl;
+	apple.show_all();
+	pear.show_all();
+	peach.show_all();
+	mango.show_all();
+}

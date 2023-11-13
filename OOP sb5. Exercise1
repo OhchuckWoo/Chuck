@@ -1,0 +1,51 @@
+fish prahoc;
+bird chicken;
+void setup(){
+  size(400,400);
+  prahoc = new fish();
+  // fish's member data&function
+  prahoc.gill = 2;
+  prahoc.swim();
+  // parent's member data&function
+  prahoc.hincm = 2;
+  prahoc.eat();
+  chicken = new bird();
+  chicken.wing = 2;
+  chicken.hincm = 10;
+  chicken.fly();
+  chicken.move();
+}
+class animal{
+  animal(){
+    hincm = 5;
+    weight = 100;
+    brain = 2;
+  }
+  float hincm,weight;
+  int brain;
+  void eat(){
+    println("eat all");
+  }
+  void move(){
+    println("move to you");
+  }
+}
+class fish extends animal{
+  fish(){
+    super();     
+  }
+  float gill;
+  int fin;
+  void swim(){
+    println(gill + " gills");
+  }  
+}
+class bird extends animal{
+  bird() {
+    super();
+  }
+  float wing;
+  void fly(){
+    println(wing + " wings");
+  }
+}

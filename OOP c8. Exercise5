@@ -1,0 +1,99 @@
+//LNK2019 error!
+
+//main.cpp
+#include <iostream>
+#include "1.h"
+#include "2.h"
+using namespace std;
+
+int main() {
+	store A, B;
+	A = store(4, 3, 3, 3, 800, 1000, 800, 1000);
+	B = store(3, 3, 4, 4, 1000, 1200, 1000, 1200);
+	A *= 2;
+	cout << A.apple.many << " " << A.pear.many << " " << A.peach.many << " " << A.banana.many << endl;
+	return 123;
+}
+
+//fruit.h
+#pragma once
+#include <iostream>
+using namespace std;
+
+class fruit {
+public:
+	fruit();
+	fruit(float p, int m);
+	float price;
+	int many;
+
+	float calc();
+	void show_all();
+};
+
+//fruit.cpp
+#include "1.h"
+
+fruit::fruit() {
+	price = 200.; many = 2;
+}
+
+fruit::fruit(float p, int m) {
+	price = p; many = m;
+}
+
+float fruit::calc() {
+	return many * price;
+}
+
+void fruit::show_all() {
+	cout << "price = " << this->price << endl;
+	cout << "many = " << this->many << endl;
+}
+
+//store.h
+#pragma once
+#include "1.h"
+
+class store {
+public:
+	store();
+	store(int a, int b, int c, int d, float e, float f, float g, float h);
+	fruit apple, pear, peach, banana;
+	float total();
+	float discount(float ratio);
+	void operator*=(int);
+};
+
+//store.cpp
+#include "2.h"
+
+store::store() {};
+
+store::store(int a, int b, int c, int d, float e, float f, float g, float h) {
+	apple = fruit(e, a);
+	pear = fruit(f, b);
+	peach = fruit(g, c);
+	banana = fruit(h, d);
+}
+
+float store::total() {
+	float sum_price = apple.calc();
+	sum_price += pear.calc();
+	sum_price += peach.calc();
+	sum_price += banana.calc();
+	return sum_price;
+}
+
+float store::discount(float ratio) {
+	float sum_price = this->total();
+	return ((100 - ratio) / 100) * sum_price;
+}
+
+void store::operator*=(int n) {
+	store* c = this;
+	c->apple.many *= n;
+	c->pear.many *= n;
+	c->peach.many *= n;
+	c->banana.many *= n;
+}

@@ -1,0 +1,45 @@
+#include <iostream>
+using namespace std;
+class Person {
+public:
+	Person(int x) { 
+		a = x + 5;
+		cout << "Person::Person(int ) called with a = " << a << endl; 
+	}
+	Person() {
+		a = 0;
+		cout << "Person::Person() called with a = " << a << endl; 
+	}
+	int a;
+};
+
+class Faculty : virtual public Person {
+public:
+	Faculty(int x) : Person(x) { 
+		a = x + 10;
+		cout << "Faculty::Faculty(int ) called with new a = " << a << endl; 
+	}
+	int a;
+};
+
+class Student : virtual public Person{
+public:
+	Student(int x) : Person(x) { 
+		a = x + 15;
+		cout << "Student::Student(int ) called with new a = " <<  a << endl;
+	}
+	int a;
+};
+
+class TA : public Faculty, public Student {
+public:
+	TA(int x) : Person(x), Student(x), Faculty(x) {
+		a = x + 20;
+		cout << "TA::TA(int ) called with new a = " << a << endl;
+	}
+	int a;
+};
+
+int main() {
+	TA tal(30);
+}

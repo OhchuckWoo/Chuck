@@ -1,0 +1,137 @@
+//Car.h
+#pragma once
+class Car {
+public:
+	Car() : speed(0.1), wheels(0), price(0.2) {};
+	Car(float, int, float);
+	void setPrice(float);
+	float getPrice();
+	float speed;
+	void speedChange(float);
+	int wheels;
+	void setWheels(int);
+	int getWheels();
+	virtual void klaxon(int);
+  friend class Engineer;
+  Car operator+(Car&);
+protected:
+	float price;
+	void speedUp(float);
+	void speedDown(float);
+private:
+	int ndoor;
+	void setdoors(int);
+};
+
+//Car.cpp
+#include "1.h"
+#include <iostream>
+
+Car::Car(float ss, int ww, float pp) {
+	speed = ss;
+	wheels = ww;
+	price = pp;
+	std::cout << " new Car\n";
+}
+void Car::speedUp(float x) { speed += x; }
+void Car::speedDown(float x) { speed -= x; }
+void Car::setPrice(float x) { price = x; }
+float Car::getPrice() { return price; }
+void Car::speedChange(float x) {
+	if (x > 0) speedUp(x);
+	else speedDown(-x);
+}
+void Car::setWheels(int n) { wheels = n; }
+int Car::getWheels() { return wheels; }
+void Car::klaxon(int n) {
+	for (int i = 0; i < n; i++) {
+		std::cout << " no horn\n";
+	}
+}
+void Car::setdoors(int n) {
+	ndoor = n;
+}
+Car Car::operator+(Car& A) {
+	Car C;
+	C.speed = this->speed + A.speed;
+	C.price = this->price + A.price;
+	C.wheels = this->wheels + A.wheels;
+	return C;
+}
+
+//Engineer.h
+#pragma once
+#include "1.h"
+
+class Engineer {
+public:
+	float getCarPrice(Car* xxx) { return xxx->price; }
+	int getCardoors(Car* xxx) { return xxx->ndoor; }
+	float getCarSpeed(Car* xxx) { return xxx->speed; }
+};
+
+//SUV.h
+#pragma once;
+#include "1.h"
+
+class SUV : public Car {
+private:
+	int spareWheels;
+public:
+	void klaxon(int);
+	void setSpareWheels(int);
+	int getSpareWheels();
+	float getTotalPrice();
+};
+
+//SUV.cpp
+#include "2.h"
+#include <iostream>
+
+void SUV::setSpareWheels(int ii) {
+	spareWheels = ii;
+}
+
+int SUV::getSpareWheels() {
+	return spareWheels;
+}
+
+float SUV::getTotalPrice() {
+	return (this->wheels * 100.0 + this->price);
+}
+
+void SUV::klaxon(int n) {
+	for (int i = 0;i < n;i++) {
+		std::cout << " Beep\n";
+	}
+}
+
+//main.cpp
+#include <iostream>
+using namespace std;
+#include "1.h"
+#include "2.h"
+#include "3.h"
+int main() {
+	Car* newSUV = new SUV();
+  Car A, B, C;
+  A = Car(1000, 3, 500);
+  B = Car(7000, 4, 5000);
+  C = A + B;
+	newSUV->setPrice(5000);
+	//cout << " price " << newSUV->price << "\n"; protected라 접근 불가
+	// cout << " doors " << newSUV->ndoor << "\n"; private라 접근 불가
+	cout << " price " << newSUV->getPrice() << "\n";
+  Engineer engineer;
+  cout << " price " << engineer.getCarPrice(newSUV) << endl;
+  cout << " doors " << engineer.getCardoors(newSUV) << endl;
+  cout << " spped " << engineer.getCarSpeed(newSUV) << endl;
+  cout << " C price " << engineer.getCarPrice(&C) << endl;
+  cout << " C speed " << C.speed << endl;
+  cout << " C wheels " << C.wheels << endl;
+  cout << "with virtual\n";
+  newSUV->klaxon(3);
+
+	delete newSUV;
+	return 123;
+}

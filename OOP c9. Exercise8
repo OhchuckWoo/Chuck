@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+class mm {
+public:
+	mm() { a = 4 + 300; cout << "mm\n"; }
+	mm(int b) { a = b + 100; cout << " mmb\n"; }
+	int a;
+};
+class nn : public mm {
+public:
+	nn() { a = 11; cout << " nn\n"; }
+	nn(int b) { c = a; a = b; mm::mm(a); cout << " nnb\n"; }
+	int c;
+};
+class oo : public nn {
+public:
+	oo() { a = 15; cout << " oo\n"; }
+	oo(int b) { c = a + 13; a = b + 3; cout << " oob\n"; }
+};
+int main() {
+	nn pp(5);
+	oo qq(5);
+	cout << pp.a << " " << qq.a << endl;
+	cout << pp.c << " " << qq.c << endl;
+	return 123;
+}

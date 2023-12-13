@@ -1,0 +1,65 @@
+//animal.h
+#pragma once
+#include <iostream>
+using namespace std;
+class animal {
+public:
+	animal() : nLegs(2) {
+		cout << nLegs << " animal\n";
+	};
+	int nLegs;
+	void eat() { cout << " I eat\n"; }
+};
+
+//human.h
+#pragma once
+#include "1.h"
+
+class human : public animal {
+public:
+	human() { nArms = 2; }
+	int nArms;
+	void walk() { cout << " I walk\n"; }
+};
+
+//bird.h
+#pragma once
+#include "1.h"
+
+class bird : public animal {
+public:
+	bird() : nWings(2) {}
+	int nWings;
+	void fly() { cout << " I fly\n"; }
+};
+
+//fish.h
+#pragma once
+#include "1.h"
+
+class fish : public animal {
+public:
+	fish() {}
+	fish(int n) : nFin(n) {}
+	int nFin;
+	void swim() { cout << "I swim\n"; }
+};
+
+//main.cpp
+#include <iostream>
+#include "1.h"
+#include "2.h"
+#include "3.h"
+#include "4.h"
+using namespace std;
+int main() {
+	animal a;
+	human b;
+	bird c;
+	fish d(2);
+	a.eat(); b.eat(); c.eat(); d.eat();
+	b.walk(); c.fly(); d.swim();
+	cout << " d " << d.nFin << endl;
+	cout << " b " << b.nLegs << endl;
+	return 123;
+}

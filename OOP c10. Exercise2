@@ -1,0 +1,16 @@
+#include <iostream>
+#include <string>
+using namespace std;
+template < typename T >
+bool greater_than(T a, T b) {
+	return a > b;
+}
+
+int main() {
+	cout << greater_than(2, 3) << endl;
+	cout << greater_than(2.7, 3.2) << endl;
+	cout << greater_than(3.2, 2.7) << endl;
+	string word1 = "ABC", word2 = "XY";
+	cout << greater_than(word1, word2) << endl;
+	cout << greater_than(word2, word1) << endl;
+}

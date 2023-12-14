@@ -1,0 +1,13 @@
+#include <iostream>
+#include <string>
+using namespace std;
+int main() {
+	string A = "I am";
+	string B = " a dog.";
+	string C = " a cat.";
+	string D;
+	D = A + B;
+	cout << D << endl;
+	D += C;
+	cout << D << endl;
+}
